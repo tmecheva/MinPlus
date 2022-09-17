@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on 2022-09-13 12:12:01 by Eclipse SUMO netedit Version 1.10.0
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/netconvertConfiguration.xsd">
+
+    <input>
+        <sumo-net-file value="SktP.net.xml"/>
+    </input>
+
+    <output>
+        <output-file value="SktP.net.xml"/>
+        <output.street-names value="true"/>
+    </output>
+
+    <processing>
+        <geometry.min-radius.fix.railways value="false"/>
+        <geometry.max-grade.fix value="false"/>
+        <offset.disable-normalization value="true"/>
+        <lefthand value="false"/>
+    </processing>
+
+    <junctions>
+        <no-internal-links value="true"/>
+        <no-turnarounds value="true"/>
+        <junctions.corner-detail value="5"/>
+        <junctions.limit-turn-speed value="5.5"/>
+        <rectangular-lane-cut value="false"/>
+    </junctions>
+
+    <pedestrian>
+        <walkingareas value="false"/>
+    </pedestrian>
+
+    <report>
+        <aggregate-warnings value="5"/>
+    </report>
+
+</configuration>
+-->
+
+<net version="1.9" junctionCornerDetail="5" limitTurnSpeed="5.50" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/net_file.xsd">
+
+    <location netOffset="-314340.44,-4666326.23" convBoundary="906.27,943.17,1309.70,1122.18" origBoundary="24.753470,42.127385,24.785510,42.143020" projParameter="+proj=utm +zone=35 +ellps=WGS84 +datum=WGS84 +units=m +no_defs"/>
+
+    <type id="highway.bridleway" priority="1" numLanes="1" speed="2.78" allow="pedestrian" oneway="1" width="2.00"/>
+    <type id="highway.bus_guideway" priority="1" numLanes="1" speed="27.78" allow="bus" oneway="1"/>
+    <type id="highway.cycleway" priority="1" numLanes="1" speed="8.33" allow="bicycle" oneway="1" width="1.00"/>
+    <type id="highway.footway" priority="1" numLanes="1" speed="2.78" allow="pedestrian" oneway="1" width="2.00"/>
+    <type id="highway.ford" priority="1" numLanes="1" speed="2.78" allow="army" oneway="1"/>
+    <type id="highway.living_street" priority="2" numLanes="1" speed="2.78" disallow="tram rail_urban rail rail_electric rail_fast ship" oneway="1"/>
+    <type id="highway.motorway" priority="14" numLanes="2" speed="39.44" allow="private emergency authority army vip passenger hov taxi bus coach delivery truck trailer motorcycle evehicle custom1 custom2" oneway="1"/>
+    <type id="highway.motorway_link" priority="9" numLanes="1" speed="22.22" allow="private emergency authority army vip passenger hov taxi bus coach delivery truck trailer motorcycle evehicle custom1 custom2" oneway="1"/>
+    <type id="highway.path" priority="1" numLanes="1" speed="2.78" allow="pedestrian bicycle" oneway="1" width="2.00"/>
+    <type id="highway.pedestrian" priority="1" numLanes="1" speed="2.78" allow="pedestrian" oneway="1" width="2.00"/>
+    <type id="highway.primary" priority="12" numLanes="2" speed="27.78" disallow="tram rail_urban rail rail_electric rail_fast ship" oneway="1"/>
+    <type id="highway.primary_link" priority="7" numLanes="1" speed="22.22" disallow="tram rail_urban rail rail_electric rail_fast ship" oneway="1"/>
+    <type id="highway.raceway" priority="15" numLanes="2" speed="83.33" allow="vip" oneway="1"/>
+    <type id="highway.residential" priority="3" numLanes="1" speed="13.89" disallow="tram rail_urban rail rail_electric rail_fast ship" oneway="1"/>
+    <type id="highway.secondary" priority="11" numLanes="1" speed="27.78" disallow="tram rail_urban rail rail_electric rail_fast ship" oneway="1"/>
+    <type id="highway.secondary_link" priority="6" numLanes="1" speed="22.22" disallow="tram rail_urban rail rail_electric rail_fast ship" oneway="1"/>
+    <type id="highway.service" priority="1" numLanes="1" speed="5.56" allow="pedestrian delivery bicycle" oneway="1"/>
+    <type id="highway.stairs" priority="1" numLanes="1" speed="1.39" allow="pedestrian" oneway="1" width="2.00"/>
+    <type id="highway.step" priority="1" numLanes="1" speed="1.39" allow="pedestrian" oneway="1" width="2.00"/>
+    <type id="highway.steps" priority="1" numLanes="1" speed="1.39" allow="pedestrian" oneway="1" width="2.00"/>
+    <type id="highway.tertiary" priority="10" numLanes="1" speed="22.22" disallow="tram rail_urban rail rail_electric rail_fast ship" oneway="1"/>
+    <type id="highway.tertiary_link" priority="5" numLanes="1" speed="22.22" disallow="tram rail_urban rail rail_electric rail_fast ship" oneway="1"/>
+    <type id="highway.track" priority="1" numLanes="1" speed="5.56" allow="pedestrian motorcycle moped bicycle" oneway="1"/>
+    <type id="highway.trunk" priority="13" numLanes="2" speed="27.78" disallow="pedestrian bicycle tram rail_urban rail rail_electric rail_fast ship" oneway="1"/>
+    <type id="highway.trunk_link" priority="8" numLanes="1" speed="22.22" disallow="pedestrian bicycle tram rail_urban rail rail_electric rail_fast ship" oneway="1"/>
+    <type id="highway.unclassified" priority="4" numLanes="1" speed="13.89" disallow="tram rail_urban rail rail_electric rail_fast ship" oneway="1"/>
+    <type id="highway.unsurfaced" priority="1" numLanes="1" speed="8.33" disallow="tram rail_urban rail rail_electric rail_fast ship" oneway="1"/>
+    <type id="railway.highspeed" priority="21" numLanes="1" speed="69.44" allow="rail_fast" oneway="1"/>
+    <type id="railway.light_rail" priority="19" numLanes="1" speed="27.78" allow="rail_urban" oneway="1"/>
+    <type id="railway.preserved" priority="16" numLanes="1" speed="27.78" allow="rail" oneway="1"/>
+    <type id="railway.rail" priority="20" numLanes="1" speed="44.44" allow="rail" oneway="1"/>
+    <type id="railway.subway" priority="18" numLanes="1" speed="27.78" allow="rail_urban" oneway="1"/>
+    <type id="railway.tram" priority="17" numLanes="1" speed="13.89" allow="tram" oneway="1"/>
+
+    <edge id="136100522#1" from="890670257" to="890670350" name="бул. Санкт Петербург" priority="11" type="highway.secondary" spreadType="center">
+        <lane id="136100522#1_0" index="0" disallow="tram rail_urban rail rail_electric rail_fast ship" speed="27.78" length="432.39" shape="912.84,940.22 1310.95,1108.95">
+            <param key="origId" value="136100522"/>
+        </lane>
+        <lane id="136100522#1_1" index="1" disallow="tram rail_urban rail rail_electric rail_fast ship" speed="27.78" length="432.39" shape="911.59,943.17 1309.70,1111.90">
+            <param key="origId" value="136100522"/>
+        </lane>
+        <lane id="136100522#1_2" index="2" disallow="tram rail_urban rail rail_electric rail_fast ship" speed="27.78" length="432.39" shape="910.34,946.12 1308.45,1114.85">
+            <param key="origId" value="136100522"/>
+        </lane>
+        <param key="origFrom" value="890670257"/>
+        <param key="origTo" value="890670350"/>
+        <param key="ref" value="8604"/>
+    </edge>
+    <edge id="230878792#0" from="829171827" to="3289869079" name="бул. Санкт Петербург" priority="11" type="highway.secondary" spreadType="center" shape="1304.76,1122.18 1257.32,1101.81 1227.93,1089.19 1188.46,1072.32 1130.46,1047.33 1105.15,1036.45 906.27,955.34">
+        <lane id="230878792#0_0" index="0" disallow="tram rail_urban rail rail_electric rail_fast ship" speed="27.78" length="432.03" shape="1303.50,1125.12 1256.06,1104.75 1226.67,1092.13 1187.20,1075.26 1129.19,1050.27 1103.91,1039.40 905.06,958.30">
+            <param key="origId" value="230878792"/>
+        </lane>
+        <lane id="230878792#0_1" index="1" disallow="tram rail_urban rail rail_electric rail_fast ship" speed="27.78" length="432.03" shape="1304.76,1122.18 1257.32,1101.81 1227.93,1089.19 1188.46,1072.32 1130.46,1047.33 1105.15,1036.45 906.27,955.34">
+            <param key="origId" value="230878792"/>
+        </lane>
+        <lane id="230878792#0_2" index="2" disallow="tram rail_urban rail rail_electric rail_fast ship" speed="27.78" length="432.03" shape="1306.02,1119.24 1258.58,1098.87 1229.19,1086.25 1189.72,1069.38 1131.73,1044.39 1106.39,1033.50 907.48,952.38">
+            <param key="origId" value="230878792"/>
+        </lane>
+        <param key="origFrom" value="829171827"/>
+        <param key="ref" value="8604"/>
+    </edge>
+
+    <junction id="3289869079" type="dead_end" x="906.27" y="955.34" incLanes="230878792#0_0 230878792#0_1 230878792#0_2" intLanes="" shape="904.46,959.78 908.08,950.90"/>
+    <junction id="829171827" type="dead_end" x="1304.76" y="1122.18" incLanes="" intLanes="" shape="1306.65,1117.77 1302.87,1126.59"/>
+    <junction id="890670257" type="dead_end" x="911.59" y="943.17" incLanes="" intLanes="" shape="909.72,947.59 913.46,938.75"/>
+    <junction id="890670350" type="dead_end" x="1309.70" y="1111.90" incLanes="136100522#1_0 136100522#1_1 136100522#1_2" intLanes="" shape="1311.57,1107.48 1307.83,1116.32"/>
+
+</net>
