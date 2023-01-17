@@ -1,8 +1,8 @@
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
 
     <input>
-        <net-file value="/home/tedy/Sumo/script/Min-Plus/Sim/net/Izt-Mend.net.xml" />
-        <route-files value="/home/tedy/Sumo/script/Min-Plus/Out/Routes/Izt-Mend/1.0.xml" />
+        <net-file value="/home/tedy/Sumo/script/Min-Plus/Sim/net/Mend-SktP.net.xml" />
+        <route-files value="/home/tedy/Sumo/script/Min-Plus/NCOut/Routes/Mend-SktP/0.8r.xml" />
         <end value="3600" />
     </input>
     
@@ -12,9 +12,9 @@
     </processing>
     
     <output>
-        <statistic-output value="/home/tedy/Sumo/script/Min-Plus/Out/Result/SktP/DefaultAD/Stat/1.0.xml" />
+        <statistic-output value="/home/tedy/Sumo/script/Min-Plus/NCOut/Result/Mend-SktP/Stat/0.8.xml" />
         <duration-log.statistics value="true" />
-        <tripinfo-output value="/home/tedy/Sumo/script/Min-Plus/Out/Result/SktP/DefaultAD/Tripinfo/1.0.xml" />
+        <tripinfo-output value="/home/tedy/Sumo/script/Min-Plus/NCOut/Result/Mend-SktP/Tripinfo/0.8.xml" />
     </output>
     
     <routing>

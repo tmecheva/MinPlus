@@ -2,8 +2,7 @@ import sys
 import os
 import header
 import pandas as pd
-import numpy as np
-import statistics 
+ 
     
 def CreateLineFunction(a,b):
     result=[0]*360
@@ -64,75 +63,6 @@ def MinPlusConvolve(arr1p,arr2p):
                 arr1.insert(x-1,arr1[x-1])
 
         return z
-
-def CalculateServiceCurveAnalitical(speed,Ta):
-    ServiceCurve=[0]*360
-    for i in range(0,len(ServiceCurve)):
-        t=i*10
-        if t-Ta<=0:
-            ServiceCurve[i] = 0
-        else:
-            ServiceCurve[i]=speed*(t-Ta)                
-    return ServiceCurve
-
-def MaxRate(arr):
-    slope=0
-    for i in range(1,len(arr)):
-        slope=max(slope,arr[i]-arr[i-1])
-    return slope
-
-def SustainableRate(arr):
-    slope=[]
-    for i in range(0,len(arr)-1):
-        s=arr[i+1]-arr[i]
-        if s!=0:
-            slope.append(s)
-    return statistics.multimode(slope)[0]
-
-def CheckCurves(small,big):
-    if len(small)!=len(big):
-        return False
-    else:
-        for i in range(0,len(big)):
-            if big[i]<small[i]:
-                return False        
-        return True
-
-def TSPECSusRate(arr):
-    p=MaxRate(arr)
-    r=SustainableRate(arr)
-    for burst in header.burstSize:
-        b=p*burst
-        f1=CreateLineFunction(p,1)
-        f2=CreateLineFunction(r,b)
-        f1[0]=0
-        f2[0]=0
-        minF = MinFunction(f1,f2)
-        if CheckCurves(arr,minF):
-            return minF
-
-    return []
-
-def TSPEC(arr):
-    p=MaxRate(arr)
-    r=ACLinear(arr)[0]
-    for burst in header.burstSize:
-        b=p*burst
-        f1=CreateLineFunction(p,1)
-        f2=CreateLineFunction(r,b)
-        f1[0]=0
-        f2[0]=0
-        minF = MinFunction(f1,f2)
-        if CheckCurves(arr,minF):
-            return minF
-        
-    return []
-
-def ACLinear(y):
-    x=[0]*len(y)
-    for i in range(0,len(x)):
-        x[i]=i
-    return np.polyfit(x,y,1)
     
 def Convolve(a,b,c,d,e,f,g,h):
     x0 = CreateLineFunction(0,0)

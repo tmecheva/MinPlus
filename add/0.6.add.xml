@@ -1,0 +1,6 @@
+<additional>
+    <vTypeDistribution id="vdist1">
+        <vType id="type1" carFollowModel="Krauss" color="0,0,1" probability="0.4"/>
+        <vType id="type2" carFollowModel="CACC" color="0,1,0" probability="0.6"/>
+     </vTypeDistribution>
+</additional>
