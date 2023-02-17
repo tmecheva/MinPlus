@@ -2,7 +2,7 @@
 
     <input>
         <net-file value="/home/tedy/Sumo/script/Min-Plus/Sim/net/largeLdown.net.xml" />
-        <route-files value="/home/tedy/Sumo/script/Min-Plus/AVOut/Routes/largeLdown/0.9/0.8.xml" />
+        <route-files value="/home/tedy/Sumo/script/Min-Plus/AVOut/Routes/largeLdown/1.0/0.8.xml" />
         <end value="3600" />
     </input>
     
@@ -12,9 +12,9 @@
     </processing>
     
     <output>
-        <statistic-output value="/home/tedy/Sumo/script/Min-Plus/AVOut/Result/largeLdown/0.9/Stat/0.8.xml" />
+        <statistic-output value="/home/tedy/Sumo/script/Min-Plus/AVOut/Result/largeLdown/1.0/Stat/0.8.xml" />
         <duration-log.statistics value="true" />
-        <tripinfo-output value="/home/tedy/Sumo/script/Min-Plus/AVOut/Result/largeLdown/0.9/Tripinfo/0.8.xml" />
+        <tripinfo-output value="/home/tedy/Sumo/script/Min-Plus/AVOut/Result/largeLdown/1.0/Tripinfo/0.8.xml" />
     </output>
     
     <routing>
