@@ -34,14 +34,14 @@ class TrafficDemand:
         if av:
             add = " --trip-attributes='type=\"vdist1\" ' --additional-file "+ os.path.join(header.additional_path,av+'.add.xml')
         else:
-            add=""
+            add=" --trip-attributes='type=\"vdist1\" ' --additional-file "+ os.path.join(header.additional_path,'0.0.add.xml')
             
-        command='python3 '+os.path.join(header.sumo_tools_path,'randomTrips.py')+' -e 3600 --validate -n '+os.path.join(header.network_path,net+'.net.xml')+' -p '+str(p)+' -L --allow-fringe -o '+os.path.join(out_dir,str(p)+'t.xml') + add
+        command='python3 '+os.path.join(header.sumo_tools_path,'randomTrips.py')+' -e 3600 --validate -n '+os.path.join(header.network_path,net+'.net.xml')+' -p '+str(p)+' -L --allow-fringe -o '+os.path.join(out_dir,str(p)+'.xml') + add
         subprocess.run(command,shell=True)
-        
-        print(os.path.join(out_dir,str(p)+'t.xml'))
+        '''
         command = 'duarouter -r '+os.path.join(out_dir,str(p)+'t.xml')+' -n '+os.path.join(header.network_path,net+'.net.xml') +' --routing-algorithm CH --output-file '+os.path.join(out_dir,str(p)+'r.xml')
         subprocess.run(command,shell=True)
+        '''
         
     #
     def ConfigSumo(self,p,net,tls,av):
@@ -60,7 +60,7 @@ class TrafficDemand:
                 if subel.tag == 'net-file':
                     subel.set('value',os.path.join(header.network_path,net+'.net.xml'))
                 if subel.tag == 'route-files':
-                    subel.set('value',os.path.join(self.routes_path,net,av,str(p)+'r.xml'))
+                    subel.set('value',os.path.join(self.routes_path,net,av,str(p)+'.xml'))
                 if subel.tag == 'statistic-output':
                     subel.set('value',os.path.join(this_out_stat_path,str(p)+'.xml'))
                 if subel.tag == 'tripinfo-output':
@@ -87,7 +87,7 @@ class TrafficDemand:
         if not os.path.exists(adapted_path):
             os.makedirs(adapted_path)
                         
-        command = 'python3 '+os.path.join(header.sumo_tools_path,'tlsCycleAdaptation.py')+' -n '+os.path.join(header.network_path,net+'.net.xml')+' -r '+os.path.join(self.routes_path,net,str(p)+'r.xml')+' -o '+os.path.join(adapted_path,str(p)+'.xml')
+        command = 'python3 '+os.path.join(header.sumo_tools_path,'tlsCycleAdaptation.py')+' -n '+os.path.join(header.network_path,net+'.net.xml')+' -r '+os.path.join(self.routes_path,net,str(p)+'.xml')+' -o '+os.path.join(adapted_path,str(p)+'.xml')
 
         subprocess.run(command,shell=True)
         
@@ -96,19 +96,19 @@ class TrafficDemand:
         if not os.path.exists(coordinated_path):
             os.makedirs(coordinated_path)
             
-        command = 'python3 '+os.path.join(header.sumo_tools_path,'tlsCoordinator.py')+' -n '+os.path.join(header.network_path,net+'.net.xml')+' -r '+os.path.join(self.routes_path,net,str(p)+'r.xml')+' -o '+os.path.join(coordinated_path,str(p)+'.xml')        
+        command = 'python3 '+os.path.join(header.sumo_tools_path,'tlsCoordinator.py')+' -n '+os.path.join(header.network_path,net+'.net.xml')+' -r '+os.path.join(self.routes_path,net,str(p)+'.xml')+' -o '+os.path.join(coordinated_path,str(p)+'.xml')        
         subprocess.run(command,shell=True)
         
             
     def ExamineAV(self):
-        for net in header.networks:
+        for net in header.Lnetworks:
             for i in header.period:
                 for av in header.AVpercent:
                     self.CallRandomTrips(i,net,av)
                     self.CallSumo(i,net,'',av)
                     
     def ExamineDefaultTLS(self):
-        for net in header.networks:
+        for net in header.Lnetworks:
             for i in header.period:
                 self.CallRandomTrips(i,net,'')
                 self.CallSumo(i,net,'','')

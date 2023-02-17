@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<additional>       
+    <inductionLoop id="306:9" lane="25625330#0_0" pos="2" freq="3600" file="out.xml"/>
+    <inductionLoop id="306:11" lane="25625330#0_1" pos="2" freq="3600" file="out.xml"/>
+    <inductionLoop id="306:13" lane="25625330#0_2" pos="2" freq="3600" file="out.xml"/>
+    <inductionLoop id="306:15" lane="81371106#1_0" pos="2" freq="3600" file="out.xml"/>
+    <inductionLoop id="306:17" lane="81371106#1_1" pos="2" freq="3600" file="out.xml"/>
+    <inductionLoop id="306:19" lane="81371106#1_2" pos="2" freq="3600" file="out.xml"/>
+    <inductionLoop id="306:21" lane="81371106#1_3" pos="2" freq="3600" file="out.xml"/>
+    <inductionLoop id="306:1" lane="230878792#1_0" pos="2" freq="3600" file="out.xml"/>
+    <inductionLoop id="306:3" lane="230878792#1_1" pos="2" freq="3600" file="out.xml"/>
+    <inductionLoop id="306:5" lane="230878792#1_2" pos="2" freq="3600" file="out.xml"/>
+    <inductionLoop id="306:7" lane="230878792#1_3" pos="2" freq="3600" file="out.xml"/>
+    <inductionLoop id="306:27" lane="161082231#0_0" pos="2" freq="3600" file="out.xml"/>
+    <inductionLoop id="306:29" lane="161082231#0_1" pos="2" freq="3600" file="out.xml"/>
+    <inductionLoop id="306:31" lane="161082231#0_2" pos="2" freq="3600" file="out.xml"/>
+    <inductionLoop id="306:23" lane="-67676489#1_0" pos="2" freq="3600" file="out.xml"/>
+    <inductionLoop id="306:25" lane="-67676489#1_1" pos="2" freq="3600" file="out.xml"/>  
+</additional>

@@ -1,0 +1,16 @@
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/duarouterConfiguration.xsd">
+
+    <input>
+        <net-file value="/home/tedy/Sumo/2022-01-19-17-10-39/updated.net.xml" />
+        <route-files value="/home/tedy/Sumo/Data/Out/route.xml,/home/tedy/Sumo/Data/Out/flow.xml" />
+    </input>
+
+    <output>
+        <output-file value="/home/tedy/Sumo/Data/Out/DUAout.xml" />
+    </output>
+    
+    <processing>
+        <routing-algorithm value="CH" />
+    </processing>
+
+</configuration>

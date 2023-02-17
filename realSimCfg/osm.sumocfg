@@ -1,8 +1,8 @@
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
 
     <input>
-        <net-file value="/home/tedy/Sumo/script/Min-Plus/Sim/net/largeLdown.net.xml" />
-        <route-files value="/home/tedy/Sumo/script/Min-Plus/AVOut/Routes/largeLdown/0.8/0.9.xml" />
+        <net-file value="/home/tedy/Sumo/script/Min-Plus/Sim/net/Izt-Mend.net.xml" />
+        <route-files value="/home/tedy/Sumo/script/Min-Plus/NCOut/CR/Result/w4/Dua.xml" />
         <end value="3600" />
     </input>
     
@@ -12,9 +12,9 @@
     </processing>
     
     <output>
-        <statistic-output value="/home/tedy/Sumo/script/Min-Plus/AVOut/Result/largeLdown/0.8/Stat/0.9.xml" />
+        <statistic-output value="/home/tedy/Sumo/script/Min-Plus/NCOut/CR/Result/w4/stat.xml" />
         <duration-log.statistics value="true" />
-        <tripinfo-output value="/home/tedy/Sumo/script/Min-Plus/AVOut/Result/largeLdown/0.8/Tripinfo/0.9.xml" />
+        <tripinfo-output value="/home/tedy/Sumo/script/Min-Plus/NCOut/CR/Result/w4/trip.xml" />
     </output>
     
     <routing>
@@ -26,7 +26,7 @@
     </report>
 
     <gui_only>
-        <gui-settings-file value="osm.view.xml" />
+        <gui-settings-file value="/home/tedy/Sumo/script/Min-Plus/Sim/osm.view.xml" />
     </gui_only>
 
 </configuration>

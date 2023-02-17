@@ -12,11 +12,11 @@ class Curves:
         self.curves_path = os.path.join(header.current_directory,out_path,'Curves')
         self.stat_path = 'statistic'
         
-        if not os.path.exists(self.stat_path):
-            os.makedirs(self.stat_path)
-            
         if not os.path.exists(self.curves_path):
             os.makedirs(self.curves_path)
+            
+        if not os.path.exists(os.path.join(self.curves_path,self.stat_path)):
+            os.makedirs(os.path.join(self.curves_path,self.stat_path))
             
     #Calculate Departure curve from a tripinfo file       
     def CalculateArrivalCurveSimulational(self,tripinfoFile):
@@ -25,14 +25,14 @@ class Curves:
         tripinfo = doc.getElementsByTagName("tripinfo")
             
         for ti in tripinfo:
-            d = ti.getAttribute("depart")
-            di = math.ceil(float(d)/10)-1
-            AC[di]+=1
+            arr = ti.getAttribute("depart")
+            di = float(arr)/10 #math.ceil(float(d)/10)-1
+            AC[int(di)]+=1
             
         for i in range(1,360):
             AC[i]=AC[i]+AC[i-1]
             
-        #AC[0]=0
+        AC[0]=0
         return AC
     
     def CalculateServiceCurveRSPEC(self,speed,Ta):
@@ -57,13 +57,14 @@ class Curves:
             tripinfo = doc.getElementsByTagName("tripinfo")
             
             for ti in tripinfo:
-                a = ti.getAttribute("arrival")
-                ai = math.ceil(float(a)/10)-1
-                DC[ai]+=1
+                dep = ti.getAttribute("arrival")
+                ai =  math.ceil(float(dep)/10) #math.ceil(float(a)/10)-1
+                if ai < 360:
+                    DC[ai]+=1
                 
             for i in range(1,360):
                 DC[i]=DC[i]+DC[i-1]
-                
+                                
             return DC
         
     def CheckCurves(self,small,big):
@@ -77,14 +78,16 @@ class Curves:
 
       
     def FindVDelay(self,ac,dc):
-        delay = [np.inf]*len(ac)
+        delay = [0]*len(ac)
         j=0
         i=0
         while j<len(dc) and i<len(ac):
             if dc[j]>=ac[i]:                
                 delay[i]=j-i
+                if delay[i]<0:
+                    delay[i]=0
                 i+=1
-            else:
+            else:              
                 j+=1
         return delay
     
@@ -125,15 +128,74 @@ class Curves:
         df=pd.read_csv(f)
         df['DCdist']=df['DCsim']-df['DCan']
         df['DCdist'].clip(lower=0, inplace = True)
-        df['DCdist'] = (df['DCdist']*100)/df['DCsim']
         df.to_csv(f)
         
     def CalculateCurvesError(self,f):
         df=pd.read_csv(f)
         df['error'] = df['DCan']-df['DCsim']
         df['error'].clip(lower=0, inplace = True)
-        df['error'] = (df['error']*100)/df['DCsim']
-        df.to_csv(f,index=False)
+        df['error'] = df['error']/df['DCsim']
+        df.to_csv(f)
+        
+class RealSimCurves(Curves):
+    def __init__(self,out_path):
+        Curves.__init__(self,out_path)
+        self.w_h=['w','h']
+        
+    def CalculateDACurves(self,hour,w_h):
+        arrival = self.CalculateArrivalCurveSimulational(os.path.join(self.result_path,w_h+hour,'trip.xml'))
+        departureSim = self.CalculateDepartureCurveSimulational(os.path.join(self.result_path,w_h+hour,'trip.xml'))
+        result=pd.DataFrame({'ACsim':arrival,'DCsim':departureSim})
+        result.to_csv(os.path.join(self.curves_path,w_h+hour+'.csv'))
+    
+    def Curves(self):
+        for hour in range(0,23):
+            for wh in self.w_h:
+                self.CalculateDACurves(str(hour),wh)
+                self.CalculateCurvesDelay(os.path.join(self.curves_path,wh+str(hour)+'.csv'))
+                self.CalculateCurvesBacklog(os.path.join(self.curves_path,wh+str(hour)+'.csv'))
+                self.CalculateSCurves(os.path.join(self.curves_path,wh+str(hour)+'.csv'))
+                
+    def RealSimStatistic(self):
+        acdfw=pd.DataFrame()
+        dcdfw=pd.DataFrame()
+        scdfw=pd.DataFrame()
+        delaydfw=pd.DataFrame()
+        backlogdfw=pd.DataFrame()
+        
+        acdfh=pd.DataFrame()
+        dcdfh=pd.DataFrame()
+        scdfh=pd.DataFrame()
+        delaydfh=pd.DataFrame()
+        backlogdfh=pd.DataFrame()
+        
+        for hour in range(0,23):
+            df=pd.read_csv(os.path.join(self.curves_path,'h'+str(hour)+'.csv'))
+            acdfh['h'+str(hour)]=df['ACsim']
+            dcdfh['h'+str(hour)]=df['DCsim']                
+            scdfh['h'+str(hour)]=df['SC']                
+            delaydfh['h'+str(hour)]=[df['delay'].max()]
+            backlogdfh['h'+str(hour)]=[df['backlog'].max()]
+            
+        for hour in range(0,23):
+            df=pd.read_csv(os.path.join(self.curves_path,'w'+str(hour)+'.csv'))
+            acdfw['h'+str(hour)]=df['ACsim']
+            dcdfw['h'+str(hour)]=df['DCsim']                
+            scdfw['h'+str(hour)]=df['SC']                
+            delaydfw['h'+str(hour)]=[df['delay'].max()]
+            backlogdfw['h'+str(hour)]=[df['backlog'].max()]
+                
+        acdfw.to_csv(os.path.join(self.curves_path,self.stat_path,'wac.csv'))
+        dcdfw.to_csv(os.path.join(self.curves_path,self.stat_path,'wdc.csv'))
+        scdfw.to_csv(os.path.join(self.curves_path,self.stat_path,'wsc.csv'))
+        delaydfw.to_csv(os.path.join(self.curves_path,self.stat_path,'wdelay.csv'))
+        backlogdfw.to_csv(os.path.join(self.curves_path,self.stat_path,'wbacklog.csv'))  
+        
+        acdfh.to_csv(os.path.join(self.curves_path,self.stat_path,'hac.csv'))
+        dcdfh.to_csv(os.path.join(self.curves_path,self.stat_path,'hdc.csv'))
+        scdfh.to_csv(os.path.join(self.curves_path,self.stat_path,'hsc.csv'))
+        delaydfh.to_csv(os.path.join(self.curves_path,self.stat_path,'hdelay.csv'))
+        backlogdfh.to_csv(os.path.join(self.curves_path,self.stat_path,'hbacklog.csv')) 
         
 class MPCurves(Curves):
     def __init__(self,out_path):
@@ -161,7 +223,7 @@ class MPCurves(Curves):
         for net in header.networks:
             result = pd.DataFrame()
             for td in header.period:
-                print(net,td)
+                #print(net,td)
                 df=pd.read_csv(os.path.join(self.curves_path,net+'__'+td+'.csv'))
                 result[td] = df['SC']
             result.to_csv(os.path.join(self.sc_path,net+'.csv'))
@@ -179,6 +241,20 @@ class MPCurves(Curves):
             sc = self.FindSC(os.path.join(self.sc_path,net+'.csv'))
             df[net]=sc
         df.to_csv(os.path.join(self.curves_path,self.stat_path,"AllSC.csv"))
+        
+    def FindAllACurves(self):
+        for net in header.networks:
+            df=pd.DataFrame()
+            for i in header.period:
+                df[net+i] = pd.read_csv(os.path.join(self.curves_path,net+'__'+i+'.csv'))['ACsim']
+            df.to_csv(os.path.join(self.curves_path,self.stat_path,net+"AC.csv"))
+            
+    def FindAllDCurves(self):
+        for net in header.networks:
+            df=pd.DataFrame()
+            for i in header.period:
+                df[net+i] = pd.read_csv(os.path.join(self.curves_path,net+'__'+i+'.csv'))['DCsim']
+            df.to_csv(os.path.join(self.curves_path,self.stat_path,net+"DC.csv"))
             
     def IntegralSC(self,Nlist,Nintegral):
         for td in header.period:
@@ -212,7 +288,7 @@ class MPCurves(Curves):
                 DCdistDF[net][td]=round(df['DCdist'].mean(),2)
         print(DCdistDF)
         print(path)
-        DCdistDF.T.to_csv(os.path.join(out_path,'distance.csv'))
+        DCdistDF.T.to_csv(os.path.join(out_path,'distance.csv'),sep='&')
         
     def CalculateBacklog(self,junctions,path):
         out_path=os.path.join(path,self.stat_path)
@@ -250,7 +326,7 @@ class MPCurves(Curves):
                 errorDF[net][td] = round(df['error'].mean(),2)
         print(path)
         print(errorDF)
-        errorDF.T.to_csv(os.path.join(out_path,'error.csv'))
+        errorDF.T.to_csv(os.path.join(out_path,'error.csv'),sep='&')
         
     def IntegralStatistics(self,jlist):
         for j in jlist:
@@ -265,9 +341,12 @@ class MPCurves(Curves):
     def MPStatistics(self):
         self.FindSCurves()
         self.FindAllSCurves()
+        self.FindAllACurves()
+        self.FindAllDCurves()
         self.CalculateVDelay(header.networks,self.curves_path)
         self.CalculateBacklog(header.networks,self.curves_path)
         self.CalculateDCDistance(header.networks,self.curves_path)
+        self.CalculateError(header.networks,self.curves_path)
         
 class TOCurves(Curves):
     def __init__(self,out_path,OptimizationParameter):
@@ -290,20 +369,22 @@ class TOCurves(Curves):
             os.makedirs(out_path)
             
         resultAV=pd.DataFrame()
-        resultTD=pd.DataFrame()
+        #resultTD=pd.DataFrame()
 
         for net in header.Lnetworks:
-            backlogDF=pd.DataFrame(index=header.period,columns=self.ToParams)
+            backlogDF=pd.DataFrame(index=header.period,columns=[x+"av" for x in self.ToParams])
             for td in header.period:
                 for to in self.ToParams:
                     df = pd.read_csv(os.path.join(self.curves_path,net+'_'+to+'_'+td+'.csv'))
-                    backlogDF[to][td]=df['backlog'].mean()
+                    backlogDF[to+"av"][td]=df['backlog'].max()
+            backlogDF[backlogDF<=0]=np.nan
             backlogDF.to_csv(os.path.join(out_path,net+'bl.csv'))
             
-            resultAV[net] = backlogDF.mean()
-            resultTD[net] = backlogDF.mean(axis=1)
-        resultAV.to_csv(os.path.join(out_path,'backlogAV.csv'))
-        resultTD.to_csv(os.path.join(out_path,'backlogTD.csv'))
+            #resultAV[net] = backlogDF.mean()
+            #resultTD[net] = backlogDF.mean(axis=1)
+        
+        #resultAV[resultAV<0]=np.nan
+        #resultAV.to_csv(os.path.join(out_path,'backlog.csv'))
         
     def CalculateVDelay(self):
         out_path=os.path.join(self.curves_path,self.stat_path)
@@ -311,24 +392,39 @@ class TOCurves(Curves):
             os.makedirs(out_path)
             
         resultAV=pd.DataFrame()
-        resultTD=pd.DataFrame()
+        #resultTD=pd.DataFrame()
             
         for net in header.Lnetworks:
-            delayDF=pd.DataFrame(index=header.period,columns=self.ToParams)
+            delayDF=pd.DataFrame(index=header.period,columns=[x+"av" for x in self.ToParams])
             for td in header.period:
                 for to in self.ToParams:
                     df = pd.read_csv(os.path.join(self.curves_path,net+'_'+to+'_'+td+'.csv'))
-                    delayDF[to][td]=df['delay'].mean()
+                    delayDF[to+"av"][td]=df['delay'].max()
+            delayDF[delayDF<=0]=np.nan
             delayDF.to_csv(os.path.join(out_path,net+'vd.csv'))
                     
-            resultAV[net] = delayDF.mean()
-            resultTD[net] = delayDF.mean(axis=1)
-        resultAV.to_csv(os.path.join(out_path,'vdelayAV.csv'))
-        resultTD.to_csv(os.path.join(out_path,'vdelayTD.csv'))
-            
+            #resultAV[net] = delayDF.mean()
+            #resultTD[net] = delayDF.mean(axis=1)
+        #resultAV.to_csv(os.path.join(out_path,'vdelay.csv'))
+        
+    def CalculateDCurves(self):
+        out_path=os.path.join(self.curves_path,self.stat_path)
+        if not os.path.exists(out_path):
+            os.makedirs(out_path)
+                        
+        for net in header.Lnetworks:
+            for td in header.period:
+                resultDC=pd.DataFrame(columns=self.ToParams)
+                for to in self.ToParams:
+                    df = pd.read_csv(os.path.join(self.curves_path,net+'_'+to+'_'+td+'.csv'))
+                    resultDC[to]=df['DCsim']
+
+                resultDC.to_csv(os.path.join(out_path,net+td+'DC.csv'))
+                                
     def MPStatistics(self):
         self.CalculateVDelay()
         self.CalculateBacklog()
+        #self.CalculateDCurves()
 
 
 
